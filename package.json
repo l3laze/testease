@@ -1,0 +1,30 @@
+{
+  "name": "testease",
+  "version": "0.0.1-rc0",
+  "description": "A simple testing tool.",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "c8": "^3.2.0",
+    "chai": "^4.1.2",
+    "ebug": "^1.0.0-rc12",
+    "mocha": "^5.2.0"
+  },
+  "nyc": {
+    "sourceMap": true
+  },
+  "scripts": {
+    "lint": "standard *.js",
+    "lint-all": "standard",
+    "clean-cov": "rm -rf ./coverage",
+    "c8-test": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text --exclude=**/test*.js node ./tests/testease-self-exam.js",
+    "c8-mocha-test": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text --exclude=**/test*.js ./node_modules/mocha/bin/mocha ./tests/test.js",
+    "mocha-test": "./node_modules/mocha/bin/mocha ./tests/test.js",
+    "nyc-test": "nyc --version && nyc --reporter=html --reporter=text node tests/test.js",
+    "nyc-mocha-test": "nyc --version && nyc --reporter=html --reporter=text mocha tests/test.js",
+    "test": "node ./tests/testease-self-exam.js",
+    "debug": "DEBUG=testease $npm_package_scripts_test",
+    "c8-html": "./node_modules/c8/bin/c8.js report --reporter=html"
+  }
+}
