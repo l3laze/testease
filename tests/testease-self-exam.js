@@ -1,10 +1,14 @@
-const { describe, it } = require('./../index.js')
+'use strict'
+
+const debug = require('ebug')('self-exam')
+
+debug('Beginning...')
+
+const { describe, it } = require('./../src/index.js')('Hello', 'world')
 
 ;
 
 (async function asyncTests () {
-  const { analysis, describe, it } = require('./../index.js')
-
   await describe('Batman - part 1', async function Batscription () {
     await it('Cannot die', async function batDed () {
       return false
@@ -29,7 +33,7 @@ const { describe, it } = require('./../index.js')
     await it('Cannot be ended', async function jokeDed () {
       return false
     })
-  
+
     await it('Cannot screw up', async function jokeChoke () {
       return false
     })
@@ -44,4 +48,6 @@ const { describe, it } = require('./../index.js')
       return true
     })
   })
+
+  debug('Finished!')
 }())
