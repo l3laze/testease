@@ -1,52 +1,46 @@
 'use strict'
 
-const debug = require('ebug')('testease')
+process.on('uncaughtException', (err) => {
+  console.error('\nThere was an uncaught exception:\n' + err.stack + '\n')
+  process.exit(1)
+})
 
-debug('Initialing testease')
+process.on('unhandledRejection', (err) => {
+  console.error('\nThere was an uncaught rejection:\n' + err.stack + '\n')
+  process.exit(1)
+})
 
-// Internal properties
-const options = []
-const { readFileSync } = require('fs')
-const { resolve: pathResolve } = require('path')
-const { format } = require('./common.js')
+module.exports = function init (args) {
+  const startInit = Date.now()
 
-let [ tests, timeStarted, testsPassed, testsTotal, blockFinished, mapOfTests, mapKeys ] = [ {}, false, 0, 0, false ]
-
-module.exports = function init (...args) {
+  const { readFileSync } = require('fs')
+  const { resolve: pathResolve } = require('path')
+  const { format } = require('./common.js')
   const { analyze } = require('./analyze.js')
   const { printResult } = require('./printResult.js')
   const { testMap } = require('./testMap.js')
 
-  const module = {
-    tests,
-    timeStarted,
-    testsPassed,
-    testsTotal,
-    blockFinished,
-    mapOfTests,
-    mapKeys
+  const mod = {
+    exitWithFailNum: typeof args !== 'undefined' && typeof args.exitWithFailNum !== 'undefined' ? args.exitWithFailNum : true,
+    tests: {},
+    timeStarted: 0,
+    testsPassed: 0,
+    testsTotal: 0,
+    blockFinished: false,
+    mapOfTests: null,
+    mapKeys: null
   }
 
-  module.args = args
-  options.concat(args)
+  const analyzeResults = analyze.bind(mod)
+  const printAResult = printResult.bind(mod)
 
-  const startInit = Date.now()
-  process.on('uncaughtException', (err) => {
-    console.error(err)
-    process.exit(1)
-  })
-
-  if (!module.mapOfTests) {
-    module.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
-    module.mapKeys = Object.keys(module.mapOfTests)
+  if (!mod.mapOfTests) {
+    mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
+    mod.mapKeys = Object.keys(mod.mapOfTests)
   }
 
-  // Bind the private module methods..
-  const analyzeResults = analyze.bind(module)
-  const printAResult = printResult.bind(module)
-
-  module.it = async function it (lab, fn) {
-    module.tests[ lab ] = {
+  mod.it = async function it (lab, fn) {
+    mod.tests[ lab ] = {
       start: Date.now(),
       phase: 'it'
     }
@@ -60,25 +54,27 @@ module.exports = function init (...args) {
         result = fn()
       }
     } catch (err) {
-      throw err
+      result = false
     }
 
-    module.tests[ lab ].end = Date.now()
-    module.tests[ lab ].result = !!+result
+    mod.tests[ lab ].end = Date.now()
+    mod.tests[ lab ].result = !!+result
 
     if (result) {
-      module.testsPassed++
+      mod.testsPassed++
     }
 
-    module.testsTotal++
+    mod.testsTotal++
 
     try {
-      const keys = Object.keys(module.tests)
+      const keys = Object.keys(mod.tests)
 
       let parentMap = keys.indexOf(lab)
 
-      parentMap = module.mapOfTests[keys[ 0 ]]
-        ? module.mapOfTests[keys[ 0 ]]
+      // console.info(lab, parentMap, keys)
+
+      parentMap = mod.mapOfTests[keys[ 0 ]]
+        ? mod.mapOfTests[keys[ 0 ]]
         : null
 
       if (parentMap === null) {
@@ -86,19 +82,19 @@ module.exports = function init (...args) {
       }
 
       if (parentMap[ parentMap.length - 1 ].label === lab) {
-        module.blockFinished = true
+        mod.blockFinished = true
       }
     } catch (err) {
       throw err
     }
   }
 
-  module.describe = async function describe (label, func) {
-    if (!module.timeStarted) {
-      module.timeStarted = Date.now()
+  mod.describe = async function describe (label, func) {
+    if (!mod.timeStarted) {
+      mod.timeStarted = Date.now()
     }
 
-    module.tests[ label ] = {
+    mod.tests[ label ] = {
       start: Date.now(),
       phase: 'describe'
     }
@@ -111,17 +107,15 @@ module.exports = function init (...args) {
       }
     } catch (err) {
       throw err
+    } finally {
+      mod.tests[ label ].end = Date.now()
+      printAResult()
     }
 
-    module.tests[ label ].end = Date.now()
-    printAResult()
-
-    if (module.blockFinished && module.mapKeys.indexOf(label) === (module.mapKeys.length - 1)) {
+    if (mod.blockFinished && mod.mapKeys.indexOf(label) === (mod.mapKeys.length - 1)) {
       analyzeResults()
     }
   }
 
-  debug('Dropped testease in %dms', Date.now() - startInit)
-
-  return module
+  return mod
 }

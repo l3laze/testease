@@ -1,6 +1,6 @@
 'use strict'
 
-const { failed, format, passed } = require('./common.js')
+const { format, passed, failed, red, reset } = require('./common.js')
 
 function printResult () {
   const keys = Object.keys(this.tests)
@@ -14,10 +14,15 @@ function printResult () {
     }
 
     if (typeof this.tests[keys[ i ]].result !== 'undefined') {
-      message += ' '.repeat(3) + (this.tests[keys[ i ]].result === true ? passed : failed) + ' '
+      message += '   ' + (this.tests[keys[ i ]].result === true ? passed : failed) + ' '
     }
 
     message += `${keys[ i ]} ${format('+%dms', diff)}`
+
+    if (typeof this.tests[keys[ i ]].result !== 'undefined' && this.tests[keys[ i ]].result !== true) {
+      message += '\n    ' + red + `Error: ${this.tests[keys[ i ]].result}` + reset
+    }
+
     console.info(message)
   }
 
