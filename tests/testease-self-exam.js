@@ -4,7 +4,7 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
 
 ;
 
-(function syncTests() {
+(function syncTests () {
   describe('Synchronous', function description () {
     it('Passes', function pass () {
       return true
@@ -12,6 +12,10 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
 
     it('Fails', function fail () {
       return false
+    })
+
+    it('throws', function throws () {
+      throw new Error('Oops')
     })
   })
 }())
@@ -26,6 +30,10 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
 
     await it('Fails', async function fail () {
       return false
+    })
+
+    await it('throws', async function throws () {
+      throw new Error('Oops')
     })
   })
 }())

@@ -11,8 +11,6 @@ process.on('unhandledRejection', (err) => {
 })
 
 module.exports = function init (args) {
-  const startInit = Date.now()
-
   const { readFileSync } = require('fs')
   const { resolve: pathResolve } = require('path')
   const { format } = require('./common.js')
@@ -25,6 +23,7 @@ module.exports = function init (args) {
     tests: {},
     timeStarted: 0,
     testsPassed: 0,
+    testsError: 0,
     testsTotal: 0,
     blockFinished: false,
     mapOfTests: null,
@@ -34,18 +33,14 @@ module.exports = function init (args) {
   const analyzeResults = analyze.bind(mod)
   const printAResult = printResult.bind(mod)
 
-  if (!mod.mapOfTests) {
-    mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
-    mod.mapKeys = Object.keys(mod.mapOfTests)
-  }
-
   mod.it = async function it (lab, fn) {
-    mod.tests[ lab ] = {
+    mod.tests[lab] = {
       start: Date.now(),
       phase: 'it'
     }
 
     let result
+    let error
 
     try {
       if (fn.constructor.name === 'AsyncFunction') {
@@ -54,38 +49,37 @@ module.exports = function init (args) {
         result = fn()
       }
     } catch (err) {
-      result = false
+      error = err
     }
 
-    mod.tests[ lab ].end = Date.now()
-    mod.tests[ lab ].result = !!+result
+    mod.tests[lab].end = Date.now()
 
-    if (result) {
+    if (typeof result !== 'undefined') {
       mod.testsPassed++
+      mod.tests[lab].result = !!+result
+    } else if (error) {
+      mod.testsError++
+      mod.tests[lab].error = error
     }
 
     mod.testsTotal++
 
-    try {
-      const keys = Object.keys(mod.tests)
+    const keys = Object.keys(mod.tests)
 
-      let parentMap = keys.indexOf(lab)
+    let parentMap = keys.indexOf(lab)
 
-      // console.info(lab, parentMap, keys)
+    // console.info(lab, parentMap, keys)
 
-      parentMap = mod.mapOfTests[keys[ 0 ]]
-        ? mod.mapOfTests[keys[ 0 ]]
-        : null
+    parentMap = mod.mapOfTests[keys[0]]
+      ? mod.mapOfTests[keys[0]]
+      : null
 
-      if (parentMap === null) {
-        throw new Error(format('%s does not exist', keys[ 0 ]))
-      }
+    if (parentMap === null) {
+      throw new Error(format('%s does not exist', keys[0]))
+    }
 
-      if (parentMap[ parentMap.length - 1 ].label === lab) {
-        mod.blockFinished = true
-      }
-    } catch (err) {
-      throw err
+    if (parentMap[parentMap.length - 1].label === lab) {
+      mod.blockFinished = true
     }
   }
 
@@ -94,23 +88,24 @@ module.exports = function init (args) {
       mod.timeStarted = Date.now()
     }
 
-    mod.tests[ label ] = {
+    if (!mod.mapOfTests) {
+      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[1])))
+      mod.mapKeys = Object.keys(mod.mapOfTests)
+    }
+
+    mod.tests[label] = {
       start: Date.now(),
       phase: 'describe'
     }
 
-    try {
-      if (func.constructor.name === 'AsyncFunction') {
-        await func()
-      } else {
-        func()
-      }
-    } catch (err) {
-      throw err
-    } finally {
-      mod.tests[ label ].end = Date.now()
-      printAResult()
+    if (func.constructor.name === 'AsyncFunction') {
+      await func()
+    } else {
+      func()
     }
+
+    mod.tests[label].end = Date.now()
+    printAResult()
 
     if (mod.blockFinished && mod.mapKeys.indexOf(label) === (mod.mapKeys.length - 1)) {
       analyzeResults()

@@ -3,12 +3,12 @@
 const { describe, it } = require('mocha')
 // const { methodF1, methodF2 } = require('./function.js')('Hai', 'whirled')
 
-describe('Async', function describeFn() {
-  it('passes', async function itFn() {
+describe('Async', function describeFn () {
+  it('passes', async function itFn () {
     return true
   })
 
-  it('fails', async function itFn() {
+  it('fails', async function itFn () {
     throw new Error('Fail')
   })
 })
@@ -19,7 +19,7 @@ describe('Sync', function describeFn () {
     return true
   })
 
-  it('fails', function itFn() {
+  it('fails', function itFn () {
     throw new Error('Fail')
   })
 })

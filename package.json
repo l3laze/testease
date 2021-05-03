@@ -8,11 +8,11 @@
   "devDependencies": {
     "c8": "^7.7.2",
     "chai": "^4.3.4",
-    "debug": "^4.3.1",
-    "mocha": "^8.3.2"
+    "mocha": "^8.3.2",
+    "standard": "^16.0.3"
   },
   "scripts": {
-    "lint": "standard *.js",
+    "lint": "standard ./src/*.js",
     "lint-all": "standard",
     "cleancov": "rm -rf ./coverage",
     "test-mocha": "./node_modules/mocha/bin/mocha ./tests/test.js",
