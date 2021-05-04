@@ -14,9 +14,11 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
       return false
     })
 
-    it('throws', function throws () {
-      throw new Error('Oops')
-    })
+    it('Throws',
+      function throws () {
+        throw new Error('Oops')
+      }
+    )
   })
 }())
 
@@ -32,7 +34,7 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
       return false
     })
 
-    await it('throws', async function throws () {
+    await it('Throws', async function throws () {
       throw new Error('Oops')
     })
   })

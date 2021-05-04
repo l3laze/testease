@@ -23,6 +23,7 @@ module.exports = function init (args) {
     tests: {},
     timeStarted: 0,
     testsPassed: 0,
+    testsFailed: 0,
     testsError: 0,
     testsTotal: 0,
     blockFinished: false,
@@ -34,7 +35,7 @@ module.exports = function init (args) {
   const printAResult = printResult.bind(mod)
 
   mod.it = async function it (lab, fn) {
-    mod.tests[lab] = {
+    mod.tests[ lab ] = {
       start: Date.now(),
       phase: 'it'
     }
@@ -52,14 +53,19 @@ module.exports = function init (args) {
       error = err
     }
 
-    mod.tests[lab].end = Date.now()
+    mod.tests[ lab ].end = Date.now()
 
     if (typeof result !== 'undefined') {
-      mod.testsPassed++
-      mod.tests[lab].result = !!+result
+      mod.tests[ lab ].result = !!+result
+
+      if (mod.tests[ lab ].result === true) {
+        mod.testsPassed++
+      } else {
+        mod.testsFailed++
+      }
     } else if (error) {
       mod.testsError++
-      mod.tests[lab].error = error
+      mod.tests[ lab ].error = error
     }
 
     mod.testsTotal++
@@ -68,17 +74,15 @@ module.exports = function init (args) {
 
     let parentMap = keys.indexOf(lab)
 
-    // console.info(lab, parentMap, keys)
-
-    parentMap = mod.mapOfTests[keys[0]]
-      ? mod.mapOfTests[keys[0]]
+    parentMap = mod.mapOfTests[keys[ 0 ]]
+      ? mod.mapOfTests[keys[ 0 ]]
       : null
 
     if (parentMap === null) {
-      throw new Error(format('%s does not exist', keys[0]))
+      throw new Error(format('%s does not exist', keys[ 0 ]))
     }
 
-    if (parentMap[parentMap.length - 1].label === lab) {
+    if (parentMap[ parentMap.length - 1 ].label === lab) {
       mod.blockFinished = true
     }
   }
@@ -89,11 +93,11 @@ module.exports = function init (args) {
     }
 
     if (!mod.mapOfTests) {
-      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[1])))
+      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
       mod.mapKeys = Object.keys(mod.mapOfTests)
     }
 
-    mod.tests[label] = {
+    mod.tests[ label ] = {
       start: Date.now(),
       phase: 'describe'
     }
@@ -104,7 +108,7 @@ module.exports = function init (args) {
       func()
     }
 
-    mod.tests[label].end = Date.now()
+    mod.tests[ label ].end = Date.now()
     printAResult()
 
     if (mod.blockFinished && mod.mapKeys.indexOf(label) === (mod.mapKeys.length - 1)) {

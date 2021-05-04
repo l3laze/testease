@@ -1,6 +1,6 @@
 'use strict'
 
-const { describe, it } = require('./../index.js')('Hai', 'whirled')
+const { describe, it } = require('./../src/index.js')()
 
 ;
 
