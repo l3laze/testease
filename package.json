@@ -16,7 +16,8 @@
     "cleancov": "rm -rf ./coverage",
     "test-mocha": "./node_modules/mocha/bin/mocha ./tests/test.js",
     "test": "node ./tests/testease-self-exam.js",
-    "coverage": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text --exclude=**/test*.js $npm_package_scripts_test",
+    "coverage": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text $npm_package_scripts_test",
+    "c8-text-lcov": "./node_modules/c8/bin/c8.js --reporter=text-lcov $npm_package_scripts_test > ./coverage.lcov",
     "debug": "DEBUG=testease $npm_package_scripts_test"
   }
 }
