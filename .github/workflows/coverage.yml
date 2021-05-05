@@ -1,0 +1,21 @@
+name: NodeJS CI Codecov
+on: [push, pull_request]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup NodeJS
+      uses: actions/setup-node@master
+      with:
+        node-version: lts
+    - name: Install dependencies
+      run: yarn
+    - name: Generate coverage
+      run: yarn coverage
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        directory: ./coverage
+        name: codecov-umbrella
+        fail_ci_if_error: true
