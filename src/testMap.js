@@ -20,6 +20,7 @@ function testMap (file) {
 
   // Get all describe/it blocks
   const tmp = file.match(/((describe|it)\s*\((.|\s?!(\\n))+)|(\s*\}\s*\))/g)
+
   for (let i = 0; i < tmp.length; i++) {
     line = tmp[i]
 

@@ -14,7 +14,7 @@ const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false }
       return false
     })
 
-    it('Throws',
+    it( 'Throws',
       function throws () {
         throw new Error('Oops')
       }
