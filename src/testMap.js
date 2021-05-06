@@ -33,7 +33,10 @@ function testMap (file) {
 
       if (re !== null) {
         phase = re[1]
-      } else {
+      }
+
+      /* c8 ignore next 3*/
+      if (re === null) {
         throw new Error(format('Couldn\'t find phase (describe, it) of line %d:\n%s', i, line))
       }
 
@@ -43,7 +46,10 @@ function testMap (file) {
       if (re !== null) {
         // Remove surrounding quotes from labels
         label = re[0].replace(/(^['"])|(['"]$)/g, '')
-      } else {
+      }
+
+      /* c8 ignore next 3 */
+      if (re === null) {
         throw new Error(format('Couldn\'t find label of line %d:\n%s', i, line))
       }
 

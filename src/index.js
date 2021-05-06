@@ -1,10 +1,12 @@
 'use strict'
 
+/* c8 ignore next 4 */
 process.on('uncaughtException', (err) => {
   console.error('\nThere was an uncaught exception:\n' + err.stack + '\n')
   process.exit(1)
 })
 
+/* c8 ignore next 4 */
 process.on('unhandledRejection', (err) => {
   console.error('\nThere was an uncaught rejection:\n' + err.stack + '\n')
   process.exit(1)
@@ -19,7 +21,8 @@ module.exports = function init (args) {
   const { testMap } = require('./testMap.js')
 
   const mod = {
-    exitWithFailNum: typeof args !== 'undefined' && typeof args.exitWithFailNum !== 'undefined' ? args.exitWithFailNum : true,
+    /* c8 ignore next */
+    exitWithFailNum: typeof args !== 'undefined' && typeof args.exitWithFailNum !== 'undefined' ? args.exitWithFailNum : false,
     tests: {},
     timeStarted: 0,
     testsPassed: 0,
@@ -76,8 +79,10 @@ module.exports = function init (args) {
 
     parentMap = mod.mapOfTests[keys[ 0 ]]
       ? mod.mapOfTests[keys[ 0 ]]
-      : null
+      /* c8 ignore next */ : null
 
+    // No nested it blocks.
+    /* c8 ignore next 4 */
     if (parentMap === null) {
       throw new Error(format('%s does not exist', keys[ 0 ]))
     }

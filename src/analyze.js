@@ -3,7 +3,12 @@
 const { format, green, red, reset, yellow } = require('./common.js')
 
 function percentage (dividend, divisor) {
-  return dividend !== 0 ? (dividend / divisor * 100) : 0
+  /* c8 ignore next 3 */
+  if (dividend === 0) {
+    return 0
+  }
+
+  return (dividend / divisor * 100)
 }
 
 function analyze () {
@@ -17,6 +22,7 @@ function analyze () {
 
   console.info(message + '\n')
 
+  /* c8 ignore next 3 */
   if (this.exitWithFailNum) {
     process.exit(this.testsTotal - this.testsPassed)
   }

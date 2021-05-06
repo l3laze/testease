@@ -1,6 +1,6 @@
 # testease
 
-An oversimplified Mocha-inspired test framework.
+An oversimplified Mocha-inspired test tool.
 
 Developed on Ubuntu 18+ through [UserLAnd on Android](https://play.google.com/store/apps/details?id=tech.ula).
 
@@ -8,9 +8,7 @@ Developed on Ubuntu 18+ through [UserLAnd on Android](https://play.google.com/st
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/75eeb5d0ccfb41a8916ed8ebaee38acb)](https://www.codacy.com/gh/l3laze/testease/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=l3laze/testease&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/l3laze/testease/branch/master/graph/badge.svg)](https://codecov.io/gh/l3laze/testease)
 
 
-[![Generic badge](https://img.shields.io/badge/Made%20with-NodeJS-black.svg)](https://shields.io/)
-
-![Lines of Code](https://tokei.rs/b1/github/l3laze/testease)
+![Lines of Code](https://tokei.rs/b1/github/l3laze/testease) [![Generic badge](https://img.shields.io/badge/Made%20with-NodeJS-black.svg)](https://shields.io/)
 
 
 ----
@@ -27,3 +25,4 @@ Developed on Ubuntu 18+ through [UserLAnd on Android](https://play.google.com/st
 
 
 ----
+
