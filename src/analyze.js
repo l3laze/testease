@@ -23,7 +23,7 @@ function analyze () {
   console.info(`${message}\n\nFinished in ${(Date.now() - this.timeStarted)}ms`)
 
   /* c8 ignore next 3 */
-  if (this.exitWithFailNum) {
+  if (this.failures) {
     process.exit(this.testsTotal - this.testsPassed)
   }
 }

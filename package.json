@@ -7,6 +7,7 @@
   "devDependencies": {
     "c8": "^7.7.2",
     "chai": "^4.3.4",
+    "cli": "^1.0.1",
     "mocha": "^8.3.2"
   },
   "scripts": {

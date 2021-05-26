@@ -72,6 +72,8 @@ function testMap (file) {
     }
   }
 
+  // console.info('tmap', tmap)
+
   return tmap
 }
 
