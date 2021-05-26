@@ -11,16 +11,20 @@ describe('Synchronous', function description () {
     return false
   })
 
-  it( 'Throws',
-    function throws () {
+  it('Throws', function throws () {
       throw new Error('Oops')
-    }
-  )
+  })
+
+  /*
+  describe('testease', function parser () {
+    it('allows nesting describe blocks', function () {
+      return true
+    })
+  })
+  */
 })
 
-;
-
-(async function() {
+async function af() {
   await describe('Asynchronous', async function description () {
     await it('Passes', async function pass () {
       return true
@@ -34,4 +38,6 @@ describe('Synchronous', function description () {
       throw new Error('Oops')
     })
   })
-}())
+}
+
+af()

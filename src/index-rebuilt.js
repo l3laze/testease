@@ -1,29 +1,29 @@
 'use strict'
 
-/* c8 ignore next 4 */
-process.on('uncaughtException', (err) => {
-  console.error('\nThere was an uncaught exception:\n' + err.stack + '\n')
-  process.exit(1)
-})
+const { readFileSync } = require('fs')
+const { resolve: pathResolve } = require('path')
+const { format } = require('./common.js')
+const { analyze } = require('./analyze.js')
+const { printResult } = require('./printResult.js')
+const { testMap } = require('./testMap.js')
+const { testMapAsObj } = require('./testMapAsObj.js')
 
-/* c8 ignore next 4 */
-process.on('unhandledRejection', (err) => {
-  console.error('\nThere was an uncaught rejection:\n' + err.stack + '\n')
-  process.exit(1)
-})
+function init (args) {
+  /* c8 ignore next 4 */
+  process.on('uncaughtException', (err) => {
+    console.error('\nThere was an uncaught exception:\n' + err.stack + '\n')
+    process.exit(1)
+  })
 
-module.exports = function init (args) {
-  const { readFileSync } = require('fs')
-  const { resolve: pathResolve } = require('path')
-  const { format } = require('./common.js')
-  const { analyze } = require('./analyze.js')
-  const { printResult } = require('./printResult.js')
-  const { testMap } = require('./testMap.js')
-  const { testMapAsObj } = require('./testMapAsObj.js')
+  /* c8 ignore next 4 */
+  process.on('unhandledRejection', (err) => {
+    console.error('\nThere was an uncaught rejection:\n' + err.stack + '\n')
+    process.exit(1)
+  })
 
   const mod = {
     /* c8 ignore next */
-    exitWithFailNum: typeof args !== 'undefined' && typeof args.exitWithFailNum !== 'undefined' ? args.exitWithFailNum : false,
+    [ ...args ],
     tests: {},
     timeStarted: 0,
     testsPassed: 0,
@@ -39,7 +39,7 @@ module.exports = function init (args) {
   const printAResult = printResult.bind(mod)
 
   mod.it = async function it (lab, fn) {
-    mod.tests[ lab ] = {
+    this.tests[ lab ] = {
       start: Date.now(),
       phase: 'it'
     }
@@ -57,29 +57,29 @@ module.exports = function init (args) {
       error = err
     }
 
-    mod.tests[ lab ].end = Date.now()
+    this.tests[ lab ].end = Date.now()
 
     if (typeof result !== 'undefined') {
-      mod.tests[ lab ].result = !!+result
+      this.tests[ lab ].result = !!+result
 
       if (mod.tests[ lab ].result === true) {
-        mod.testsPassed++
+        this.testsPassed++
       } else {
-        mod.testsFailed++
+        this.testsFailed++
       }
     } else if (error) {
-      mod.testsError++
-      mod.tests[ lab ].error = error
+      this.testsError++
+      this.tests[ lab ].error = error
     }
 
-    mod.testsTotal++
+    this.testsTotal++
 
     const keys = Object.keys(mod.tests)
 
     let parentMap = keys.indexOf(lab)
 
-    parentMap = mod.mapOfTests[keys[ 0 ]]
-      ? mod.mapOfTests[keys[ 0 ]]
+    parentMap = this.mapOfTests[keys[ 0 ]]
+      ? this.mapOfTests[keys[ 0 ]]
       /* c8 ignore next */ : null
 
     // No nested it blocks.
@@ -89,26 +89,26 @@ module.exports = function init (args) {
     }
 
     if (parentMap[ parentMap.length - 1 ].label === lab) {
-      mod.blockFinished = true
+      this.blockFinished = true
     }
   }
 
   mod.describe = async function describe (label, func) {
-    if (!mod.timeStarted) {
+    if (!this.timeStarted) {
       mod.timeStarted = Date.now()
     }
 
-    if (!mod.mapOfTests) {
-      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
-      mod.mapKeys = Object.keys(mod.mapOfTests)
+    if (!this.mapOfTests) {
+      this.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
+      this.mapKeys = Object.keys(this.mapOfTests)
 
       /*
       console.info(testMapAsObj('' + readFileSync(pathResolve(process.argv[ 1 ]))))
-      console.info(mod.mapOfTests)
+      console.info(this.mapOfTests)
       */
     }
 
-    mod.tests[ label ] = {
+    this.tests[ label ] = {
       start: Date.now(),
       phase: 'describe'
     }
@@ -119,13 +119,17 @@ module.exports = function init (args) {
       func()
     }
 
-    mod.tests[ label ].end = Date.now()
+    this.tests[ label ].end = Date.now()
     printAResult()
 
-    if (mod.blockFinished && mod.mapKeys.indexOf(label) === (mod.mapKeys.length - 1)) {
+    if (this.blockFinished && this.mapKeys.indexOf(label) === (this.mapKeys.length - 1)) {
       analyzeResults()
     }
   }
 
   return mod
+}
+
+module.exports = {
+  init(process.argv)
 }

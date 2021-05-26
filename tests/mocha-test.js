@@ -1,17 +1,20 @@
 'use strict'
 
 const { describe, it } = require('mocha')
-// const { methodF1, methodF2 } = require('./function.js')('Hai', 'whirled')
 
-describe('Async', function describeFn () {
-  it('passes', async function itFn () {
-    return true
-  })
+async function af () {
+  describe('Async', async function describeFn () {
+    it('passes', async function itFn () {
+      return true
+    })
 
-  it('fails', async function itFn () {
-    throw new Error('Fail')
+    it('fails', async function itFn () {
+      throw new Error('Fail')
+    })
   })
-})
+}
+
+af()
 
 describe('Sync', function describeFn () {
   it('passes', function itFn () {

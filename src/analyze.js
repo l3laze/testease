@@ -20,7 +20,7 @@ function analyze () {
 
     message += format('\n%serror%s   %d/%d %i%', red, reset, this.testsError, this.testsTotal, percentage(this.testsError, this.testsTotal))
 
-  console.info(message + '\n')
+  console.info(`${message}\n\nFinished in ${(Date.now() - this.timeStarted)}ms`)
 
   /* c8 ignore next 3 */
   if (this.exitWithFailNum) {
