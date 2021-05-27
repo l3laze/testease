@@ -79,16 +79,16 @@ module.exports = function init (args) {
 
     mod.testsTotal++
 
-    const keys = Object.keys(mod.tests)
+    const k = Object.keys(mod.tests)[0]
 
-    let parentMap = mod.mapOfTests[keys[ 0 ]]
-      ? mod.mapOfTests[keys[ 0 ]]
+    let parentMap = typeof mod.mapOfTests[k] !== 'undefined'
+      ? mod.mapOfTests[k]
       /* c8 ignore next */ : null
 
     // No nested it blocks.
     /* c8 ignore next 4 */
     if (parentMap === null) {
-      throw new Error('Can not allow nested it blocks')
+      throw new Error('Nested describe/it blocks are not allowed.')
     }
 
     if (parentMap[ parentMap.length - 1 ].label === lab) {
