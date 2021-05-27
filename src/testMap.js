@@ -37,7 +37,7 @@ function testMap (file) {
 
       /* c8 ignore next 3*/
       if (re === null) {
-        throw new Error(format('Couldn\'t find phase (describe, it) of line %d:\n%s', i, line))
+        throw new Error(`Could not find phase (describe, it) of line ${i}:\n${line}`)
       }
 
       // Find the next label
@@ -50,7 +50,7 @@ function testMap (file) {
 
       /* c8 ignore next 3 */
       if (re === null) {
-        throw new Error(format('Couldn\'t find label of line %d:\n%s', i, line))
+        throw new Error(`Could not find label of line ${i}:\n${line}`)
       }
 
       // Add current it block and label to stack
@@ -71,8 +71,6 @@ function testMap (file) {
       }
     }
   }
-
-  // console.info('tmap', tmap)
 
   return tmap
 }

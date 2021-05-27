@@ -13,7 +13,6 @@ const failed = format('%s%s %s', yellow, '!', reset)
 const error = format('%s%s %s', red, '\u2620', reset)
 
 module.exports = {
-  format,
   red,
   green,
   yellow,

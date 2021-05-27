@@ -1,12 +1,14 @@
 'use strict'
 
-const { format, passed, failed, error, red, reset } = require('./common.js')
+const { passed, failed, error, red, reset } = require('./common.js')
 
+/*
 function colorErrors (err) {
-  const formatted = err.replace(/(at (?:[^(])+)/g, format('%s%s%s', red, '$1', reset))
+  const formatted = err.replace(/(at (?:[^(])+)/g, `${red}${'$1'}${reset}`)
 
   return formatted
 }
+*/
 
 function printResult () {
   const keys = Object.keys(this.tests)
@@ -17,13 +19,13 @@ function printResult () {
     diff = test.end - test.start
 
     if (this.tests[keys[i]].phase === 'describe') {
-      message = format('\n%s +%dms', keys[i], diff)
+      message = `\n${keys[i]} +${diff}ms`
     }
     else if (typeof test.result === 'boolean') {
-      message = format('%s %s +%dms', (test.result === true ? passed : failed), keys[i], diff)
+      message = `${(test.result === true ? passed : failed)} ${keys[i]} +${diff}ms`
     }
     else if (typeof test.error !== 'undefined') {
-      message = format('%s %s +%dms\n%s', error, keys [i], diff, colorErrors(test.error.stack))
+      message = `${error} ${keys[i]} +${diff}ms\n${test.error.stack}`
     }
 
     console.info(message)

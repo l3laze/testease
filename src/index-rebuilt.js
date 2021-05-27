@@ -33,7 +33,9 @@ module.exports = function init (args) {
     mapOfTests: null,
     mapKeys: null
   }
+
   const argKeys = Object.keys(args)
+
   for (let k of argKeys) {
     mod[ k ] = args[ k ]
   }
@@ -52,9 +54,9 @@ module.exports = function init (args) {
 
     try {
       if (fn.constructor.name === 'AsyncFunction') {
-        result = await fn()
+        result = !!+(await fn())
       } else {
-        result = fn()
+        result = !!+(fn())
       }
     } catch (err) {
       error = err
@@ -63,13 +65,13 @@ module.exports = function init (args) {
     mod.tests[ lab ].end = Date.now()
 
     if (typeof result !== 'undefined') {
-      mod.tests[ lab ].result = !!+result
-
-      if (mod.tests[ lab ].result === true) {
+      if (result === true) {
         mod.testsPassed++
       } else {
         mod.testsFailed++
       }
+
+      mod.tests[ lab ].result = result
     } else if (error) {
       mod.testsError++
       mod.tests[ lab ].error = error
@@ -79,16 +81,14 @@ module.exports = function init (args) {
 
     const keys = Object.keys(mod.tests)
 
-    let parentMap = keys.indexOf(lab)
-
-    parentMap = mod.mapOfTests[keys[ 0 ]]
+    let parentMap = mod.mapOfTests[keys[ 0 ]]
       ? mod.mapOfTests[keys[ 0 ]]
       /* c8 ignore next */ : null
 
     // No nested it blocks.
     /* c8 ignore next 4 */
     if (parentMap === null) {
-      throw new Error(format('%s does not exist', keys[ 0 ]))
+      throw new Error('Can not allow nested it blocks')
     }
 
     if (parentMap[ parentMap.length - 1 ].label === lab) {

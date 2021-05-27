@@ -1,6 +1,6 @@
 'use strict'
 
-const { format, green, red, reset, yellow } = require('./common.js')
+const { green, red, reset, yellow } = require('./common.js')
 
 function percentage (dividend, divisor) {
   /* c8 ignore next 3 */
@@ -14,11 +14,11 @@ function percentage (dividend, divisor) {
 function analyze () {
   let message
 
-  message = format('\n%spass%s    %d/%d %i%', green, reset, this.testsPassed, this.testsTotal, percentage(this.testsPassed, this.testsTotal))
+  message = `\n${green}pass${reset}    ${this.testsPassed}/${this.testsTotal} ${percentage(this.testsPassed, this.testsTotal)}%`
 
-    message += format('\n%sfail%s    %d/%d %i%', yellow, reset, this.testsFailed, this.testsTotal,  percentage(this.testsFailed, this.testsTotal))
+    message += `\n${yellow}fail${reset}    ${this.testsFailed}/${this.testsTotal} ${percentage(this.testsFailed, this.testsTotal)}%`
 
-    message += format('\n%serror%s   %d/%d %i%', red, reset, this.testsError, this.testsTotal, percentage(this.testsError, this.testsTotal))
+    message += `\n${red}error${reset}   ${this.testsError}/${this.testsTotal} ${percentage(this.testsFailed, this.testsTotal)}%`
 
   console.info(`${message}\n\nFinished in ${(Date.now() - this.timeStarted)}ms`)
 
