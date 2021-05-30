@@ -102,13 +102,8 @@ module.exports = function init (args) {
     }
 
     if (!mod.mapOfTests) {
-      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[ 1 ])))
+      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[1])))
       mod.mapKeys = Object.keys(mod.mapOfTests)
-
-      /*
-      console.info(testMapAsObj('' + readFileSync(pathResolve(process.argv[ 1 ]))))
-      console.info(mod.mapOfTests)
-      */
     }
 
     mod.tests[ label ] = {

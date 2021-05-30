@@ -8,7 +8,7 @@ function percentage (dividend, divisor) {
     return 0
   }
 
-  return (dividend / divisor * 100)
+  return ((dividend / divisor * 100) + '').substring(0,5)
 }
 
 function analyze () {
