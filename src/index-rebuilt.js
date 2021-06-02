@@ -12,14 +12,14 @@ process.on('unhandledRejection', (err) => {
   process.exit(1)
 })
 
-module.exports = function init (args) {
+module.exports = function init () {
   const { readFileSync } = require('fs')
   const { resolve: pathResolve } = require('path')
   const { format } = require('./common.js')
   const { analyze } = require('./analyze.js')
   const { printResult } = require('./printResult.js')
   const { testMap } = require('./testMap.js')
-  const { testMapAsObj } = require('./testMapAsObj.js')
+  const { validateOptions } = require('./validateOptions.js')
 
   const mod = {
     /* c8 ignore next */
@@ -34,6 +34,11 @@ module.exports = function init (args) {
     mapKeys: null
   }
 
+  const options = {
+    failures: [ 'f', 'Exit code set as number of failures?', false ]
+  }
+
+  const args = validateOptions(process.argv.slice(2), options)
   const argKeys = Object.keys(args)
 
   for (let k of argKeys) {
@@ -102,7 +107,8 @@ module.exports = function init (args) {
     }
 
     if (!mod.mapOfTests) {
-      mod.mapOfTests = testMap('' + readFileSync(pathResolve(process.argv[1])))
+      const testData = '' + readFileSync(pathResolve(process.argv[1]))
+      mod.mapOfTests = testMap(testData)
       mod.mapKeys = Object.keys(mod.mapOfTests)
     }
 

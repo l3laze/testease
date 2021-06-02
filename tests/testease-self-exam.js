@@ -1,6 +1,6 @@
 'use strict'
 
-const { describe, it } = require('./../src/index.js')({ exitWithFailNum: false })
+const { describe, it } = require('./../src/index-rebuilt.js')()
 
 describe('Synchronous', function description () {
   it('Passes', function pass () {
@@ -14,14 +14,6 @@ describe('Synchronous', function description () {
   it('Throws', function throws () {
       throw new Error('Oops')
   })
-
-  /*
-  describe('testease', function parser () {
-    it('allows nesting describe blocks', function () {
-      return true
-    })
-  })
-  */
 })
 
 async function af() {
