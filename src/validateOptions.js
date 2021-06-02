@@ -26,6 +26,7 @@ function validateOptions (args, options) {
   const shortKeys = Object.keys(shortMap)
 
   for (let a of args) {
+    /* c8 ignore start */
     argText = (a + '').replace(/^[-]{1,2}/, '')
     longIndex = longKeys.indexOf(argText)
     shortIndex = shortKeys.indexOf(argText)
@@ -36,6 +37,7 @@ function validateOptions (args, options) {
     } else {
       setOptions[longIndex < 0 ? shortMap[argText] : shortMap[longKeys[argText]]] = true
     }
+    /* c8 ignore end */
   }
 
   for (let o of longKeys) {
