@@ -1,13 +1,12 @@
 {
   "name": "testease",
-  "version": "0.0.1-rc0",
+  "version": "0.0.1",
   "description": "An oversimplified Mocha-inspired testing tool.",
-  "main": "src/index.js",
+  "main": "testease.js",
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
     "c8": "^7.7.2",
-    "chai": "^4.3.4",
-    "cli": "^1.0.1",
     "mocha": "^8.3.2"
   },
   "scripts": {
