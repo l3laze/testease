@@ -1,21 +1,20 @@
-name: NodeJS CI Codecov
+name: NodeJS c8 coverage on CI to Codecov
 on: [push, pull_request]
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v4
     - name: Setup NodeJS
-      uses: actions/setup-node@master
+      uses: actions/setup-node@v4
       with:
-        node-version: '14.16.0'
-    - name: Install dependencies
-      run: yarn
-    - name: Generate coverage
-      run: yarn c8-text-lcov
+        node-version: latest
+      run: npm i -G c8
+      run: npm run ci
     - name: Upload to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
       with:
         files: ./coverage.lcov
         name: codecov-umbrella
+        token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
