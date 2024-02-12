@@ -1,19 +1,19 @@
 {
   "name": "testease",
-  "version": "0.0.1",
-  "description": "An oversimplified Mocha-inspired testing tool.",
+  "version": "0.1.0",
+  "description": "A simple Mocha-inspired testing tool.",
   "main": "testease.js",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "c8": "^7.7.2",
-    "mocha": "^8.3.2"
+    "c8": "^9.1.0"
   },
   "scripts": {
+    "bench": "node ./self-exam.js bench",
     "clean": "rm -rf ./coverage",
-    "mocha-test": "./node_modules/mocha/bin/mocha ./tests/mocha-test.js",
-    "test": "node ./tests/testease-self-exam.js",
-    "c8-html": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text $npm_package_scripts_test",
-    "c8-text-lcov": "./node_modules/c8/bin/c8.js --reporter=text-lcov $npm_package_scripts_test > ./coverage.lcov"
+    "test": "node ./self-exam.js",
+    "coverage": "c8 -r=html -r=text --clean=false node ./self-exam.js",
+    "bench-coverage": "c8 -r=html -r=text --clean=false npm run bench",
+    "full-coverage": "npm run clean && npm run coverage && npm run bench-coverage"
   }
 }
