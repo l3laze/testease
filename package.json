@@ -10,7 +10,7 @@
   },
   "scripts": {
     "bench": "node ./self-exam.js -b",
-    "clean": "rm -rf ./coverage && rm coverage.lcov",
+    "clean": "rm -rf ./coverage && rm -f coverage.lcov",
     "test": "node ./self-exam.js",
     "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
     "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",

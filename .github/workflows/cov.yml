@@ -4,16 +4,21 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
+
     - name: Setup NodeJS
       uses: actions/setup-node@v4
       with:
         node-version: latest
+    - name: Install dependency
       run: npm i -G c8
+    - name: Run for coverage
       run: npm run ci
     - name: Upload to Codecov
       uses: codecov/codecov-action@v4
       with:
+        disable_search: true
         files: ./coverage.lcov
         name: codecov-umbrella
         token: ${{ secrets.CODECOV_TOKEN }}
