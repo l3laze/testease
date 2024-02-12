@@ -9,11 +9,14 @@
     "c8": "^9.1.0"
   },
   "scripts": {
-    "bench": "node ./self-exam.js bench",
-    "clean": "rm -rf ./coverage",
+    "bench": "node ./self-exam.js -b",
+    "clean": "rm -rf ./coverage && rm coverage.lcov",
     "test": "node ./self-exam.js",
-    "coverage": "c8 -r=html -r=text --clean=false node ./self-exam.js",
-    "bench-coverage": "c8 -r=html -r=text --clean=false npm run bench",
-    "full-coverage": "npm run clean && npm run coverage && npm run bench-coverage"
+    "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
+    "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",
+    "bench-coverage": "c8 -r=html --report-dir coverage/bench --clean=false node ./self-exam.js -b",
+    "full-coverage": "npm run clean && npm run coverage && npm run bench-coverage && npm run silent-coverage",
+    "merge-coverage": "mkdir \"coverage/tmp\" && cp -r coverage/*/tmp/. coverage/tmp && c8 report -r=text-lcov > coverage.lcov",
+    "ci": "npm run full-coverage && npm run merge-coverage"
   }
 }
