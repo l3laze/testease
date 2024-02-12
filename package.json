@@ -9,8 +9,8 @@
     "c8": "^9.1.0"
   },
   "scripts": {
-    "bench": "node ./self-exam.js -b",
     "clean": "rm -rf ./coverage && rm -f coverage.lcov",
+    "bench": "node ./self-exam.js -b",
     "test": "node ./self-exam.js",
     "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
     "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",
