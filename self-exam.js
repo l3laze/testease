@@ -23,7 +23,7 @@ async function selfExam () {
   })
 
   await it.fails('allows timeout of async tests', async function () {
-    await new Promise(resolve => setTimeout(resolve, 100))
+    await new Promise((resolve) => setTimeout(resolve, 100))
 
     return true
   }, 0)
@@ -78,7 +78,7 @@ async function selfExam () {
   return await reporter()
 }
 
-const args = process?.argv.slice(2).map(a => a.toLowerCase())
+const args = process?.argv.slice(2).map((a) => a.toLowerCase())
 const options = {
   silent: false
 }
@@ -88,15 +88,15 @@ if (args.includes('--silent') || args.includes('-q')) {
 }
 
 if (args.includes('--bench') || args.includes('-b')) {
-  const timeLimit = parseInt(args.filter(a => /\d+/.test(a))[0]) || 500
+  const timeLimit = parseInt(args.filter((a) => /\d+/.test(a))[0]) || 500
 
-  benchmark(selfExam, timeLimit).then(result => {
+  benchmark(selfExam, timeLimit).then((result) => {
     if (!options.silent) {
       console.log(result)
     }
   })
 } else {
-  selfExam().then(result => {
+  selfExam().then((result) => {
     if (!options.silent) {
       console.log(result)
     }
