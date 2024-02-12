@@ -5,12 +5,15 @@ function bench () {
   let timeTaken = 0
   let runnerStarted = 0
   let runnerTook = 0
+  let running = false
 
   function formatResults () {
     return results
   }
 
   async function benchmark (f, timeLimit) {
+    running = true
+
     const runner = async function () {
       const start = Date.now()
       await f()
@@ -28,9 +31,10 @@ function bench () {
 
       if (timeTaken >= (timeLimit -
           Math.ceil(results.reduce((accumulator, current) => accumulator + current, 0) / results.length))) {
+        running = false
         break
       }
-    } while (true)
+    } while (running)
 
     return {
       results: formatResults(),
