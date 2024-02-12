@@ -1,20 +1,22 @@
 {
   "name": "testease",
-  "version": "0.0.1-rc0",
-  "description": "An oversimplified Mocha-inspired testing tool.",
-  "main": "src/index.js",
+  "version": "0.1.0",
+  "description": "A simple Mocha-inspired testing tool.",
+  "main": "testease.js",
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
-    "c8": "^7.7.2",
-    "chai": "^4.3.4",
-    "cli": "^1.0.1",
-    "mocha": "^8.3.2"
+    "c8": "^9.1.0"
   },
   "scripts": {
-    "clean": "rm -rf ./coverage",
-    "mocha-test": "./node_modules/mocha/bin/mocha ./tests/mocha-test.js",
-    "test": "node ./tests/testease-self-exam.js",
-    "c8-html": "./node_modules/c8/bin/c8.js --reporter=html --reporter=text $npm_package_scripts_test",
-    "c8-text-lcov": "./node_modules/c8/bin/c8.js --reporter=text-lcov $npm_package_scripts_test > ./coverage.lcov"
+    "bench": "node ./self-exam.js -b",
+    "clean": "rm -rf ./coverage && rm coverage.lcov",
+    "test": "node ./self-exam.js",
+    "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
+    "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",
+    "bench-coverage": "c8 -r=html --report-dir coverage/bench --clean=false node ./self-exam.js -b",
+    "full-coverage": "npm run clean && npm run coverage && npm run bench-coverage && npm run silent-coverage",
+    "merge-coverage": "mkdir \"coverage/tmp\" && cp -r coverage/*/tmp/. coverage/tmp && c8 report -r=text-lcov > coverage.lcov",
+    "ci": "npm run full-coverage && npm run merge-coverage"
   }
 }

@@ -2,13 +2,13 @@
 
 An oversimplified Mocha-inspired test tool.
 
-Developed on Ubuntu 18+ through [UserLAnd on Android](https://play.google.com/store/apps/details?id=tech.ula).
+Initially developed on Ubuntu Linux through [UserLAnd](https://github.com/CypherpunkArmory/UserLAnd) on [Android](https://play.google.com/store/apps/details?id=tech.ula).
 
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/75eeb5d0ccfb41a8916ed8ebaee38acb)](https://www.codacy.com/gh/l3laze/testease/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=l3laze/testease&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/l3laze/testease/branch/master/graph/badge.svg)](https://codecov.io/gh/l3laze/testease)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/75eeb5d0ccfb41a8916ed8ebaee38acb)](https://app.codacy.com/gh/l3laze/testease/dashboard) [![codecov](https://codecov.io/gh/l3laze/testease/branch/master/graph/badge.svg)](https://codecov.io/gh/l3laze/testease)
 
 
-![Lines of Code](https://tokei.rs/b1/github/l3laze/testease) [![Generic badge](https://img.shields.io/badge/Made%20with-NodeJS-black.svg)](https://shields.io/)
+![Lines of code](https://img.shields.io/tokei/lines/github/l3laze/testease) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/l3laze/testease) ![Generic Custom Badge](https://img.shields.io/badge/Made_with_NodeJS-and_%3C3-red)
 
 
 ----
@@ -16,11 +16,12 @@ Developed on Ubuntu 18+ through [UserLAnd on Android](https://play.google.com/st
 
 <details><summary><b>Table of contents</b></summary>
 
-  * [Demo](#Demo)
+  * [Installation](#Installation)
   * [Usage](#Usage)
     - [Options](#Options)
     - [Example](#Example)
     - [Output](#Output)
+  * [Demo](#Demo)
 </details>
 
 
