@@ -24,9 +24,9 @@ function testease () {
   //   and https://advancedweb.hu/how-to-add-timeout-to-a-promise-in-javascript/
   const timedCall = async (func, millis) => {
     let timeoutPid
+    // Don't need a resolve, but it won't shut up.
     /* eslint-disable-next-line */
     const timeout = new Promise((reject) => {
-      /* eslint-disable-next-line */
       timeoutPid = setTimeout(() => reject(timeoutError), millis)
     })
 
