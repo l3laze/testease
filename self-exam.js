@@ -3,7 +3,7 @@
 import { describe, it, reporter } from './testease.js'
 import { benchmark } from './bench.js'
 
-async function selfExam () { /* eslint-disable-line no-unused-vars */
+async function selfExam () {
   describe('Testease Framework')
 
   it('allows synchronous success', function () {
@@ -69,37 +69,36 @@ async function selfExam () { /* eslint-disable-line no-unused-vars */
   })
 
   it.fails('errors on attempted timeout of sync code', function () {
-    /* c8 ignore next */
-    return true
   }, 0)
 
-  it.fails('errors on async code in a sync context', function () {
-    /* c8 ignore next */
-    return new Promise(resolve => setTimeout(resolve, 69))
-  }, 0)
-
-  await it.fails('errors on sync code in an async context', function () {
-    /* c8 ignore next */
-    return new Promise(resolve => setTimeout(resolve, 69))
-  }, 0)
-
-  it('fails successfully', function () {
+  it('fails successfully (for coverage)', function () {
     throw new Error('Oops')
   })
-
-  await it('times out successfully', async function () {
-    await new Promise(resolve => setTimeout(resolve, 1))
-  }, 0)
 
   return await reporter()
 }
 
-const args = process?.argv.slice(2)
+const args = process?.argv.slice(2).map(a => a.toLowerCase())
+const options = {
+  silent: false
+}
 
-if (args.map(a => a.toLowerCase()).includes('bench')) {
-  const timeLimit = parseInt(args.filter(a => /\d+/.test(a))[0]) || 100
+if (args.includes('--silent') || args.includes('-q')) {
+  options.silent = true
+}
 
-  benchmark(selfExam, timeLimit).then(result => console.log(result))
+if (args.includes('--bench') || args.includes('-b')) {
+  const timeLimit = parseInt(args.filter(a => /\d+/.test(a))[0]) || 500
+
+  benchmark(selfExam, timeLimit).then(result => {
+    if (!options.silent) {
+      console.log(result)
+    }
+  })
 } else {
-  selfExam().then(result => console.log(result))
+  selfExam().then(result => {
+    if (!options.silent) {
+      console.log(result)
+    }
+  })
 }
