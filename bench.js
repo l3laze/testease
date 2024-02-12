@@ -26,7 +26,8 @@ function bench () {
 
       timeTaken += runnerTook
 
-      if (timeTaken >= timeLimit) {
+      if (timeTaken >= (timeLimit -
+          Math.ceil(results.reduce((accumulator, current) => accumulator + current, 0) / results.length))) {
         break
       }
     } while (true)
