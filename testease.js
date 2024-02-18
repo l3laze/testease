@@ -20,12 +20,9 @@ function testease () {
     results.message += '\n' + label + '\n'
   }
 
-  // Based on https://stackoverflow.com/a/46675277/7665043
-  //   and https://advancedweb.hu/how-to-add-timeout-to-a-promise-in-javascript/
   const timedCall = async (func, millis) => {
     let timeoutPid = 0
 
-    // Don't need a resolve, but it won't shut up.
     /* eslint-disable-next-line */
     const timeout = new Promise((reject) => {
       timeoutPid = setTimeout(() => reject(timeoutError), millis)
