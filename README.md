@@ -1,6 +1,6 @@
 # testease
 
-A simplified/toy Mocha-inspired test tool.
+A simplified/toy Mocha-inspired test framework.
 
 [![Generic badge](https://img.shields.io/badge/Vanilla-grey?logo=Javascript)](https://shields.io/)
 
@@ -69,7 +69,7 @@ For more see the source code in `testease.js`, and related tests in `self-exam.j
 
 * ***label*** - required; Shown in test results.
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ----
+>>>>>>>>>>>>>>>>>>>>>>>>>>> ---
 
 #### async function it (*label*, *testFunc*[, *timeout* = -1])
 
@@ -79,7 +79,7 @@ For more see the source code in `testease.js`, and related tests in `self-exam.j
 * ***testFunc*** - required; A single test as a func; must return true to pass.
 * ***timeout*** - optional; Millisecond timeout of async testFunc. Default = -1, disabled.
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ----
+>>>>>>>>>>>>>>>>>>>>>>>>>>> ---
 
 #### async function it.fails (*label*, *testFunc*[, *timeout* = -1])
 
@@ -87,9 +87,9 @@ For more see the source code in `testease.js`, and related tests in `self-exam.j
 
 * ***label*** - required; Shown in test results.
 * ***testFunc*** - required; A single test as a func; must return false to pass.
-* ***timeout*** - optional; Millisecond timeout of async testFunc. Default = -1, disabled.
+* ***timeout*** - optional; ms timeout of async testFunc. Default = -1, disabled.
 
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ----
+>>>>>>>>>>>>>>>>>>>>>>>>>>> ---
 
 #### async function reporter
 
