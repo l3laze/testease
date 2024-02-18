@@ -23,7 +23,8 @@ function testease () {
   // Based on https://stackoverflow.com/a/46675277/7665043
   //   and https://advancedweb.hu/how-to-add-timeout-to-a-promise-in-javascript/
   const timedCall = async (func, millis) => {
-    let timeoutPid
+    let timeoutPid = 0
+
     // Don't need a resolve, but it won't shut up.
     /* eslint-disable-next-line */
     const timeout = new Promise((reject) => {
@@ -31,7 +32,7 @@ function testease () {
     })
 
     return Promise.race([new Promise((resolve) => resolve(func())), timeout])
-      .finally(function (result) {
+      .finally((result) => {
         clearTimeout(timeoutPid)
 
         return result
