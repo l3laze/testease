@@ -12,11 +12,12 @@
     "clean": "rm -rf ./coverage && rm -f coverage.lcov",
     "bench": "node ./self-exam.js -b",
     "test": "node ./self-exam.js",
-    "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
     "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",
     "bench-coverage": "c8 -r=html --report-dir coverage/bench --clean=false node ./self-exam.js -b",
+    "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
     "full-coverage": "npm run clean && npm run coverage && npm run bench-coverage && npm run silent-coverage",
     "merge-coverage": "mkdir \"coverage/tmp\" && cp -r coverage/*/tmp/. coverage/tmp && c8 report -r=text-lcov > coverage.lcov",
-    "ci": "npm run full-coverage && npm run merge-coverage"
+    "ci": "npm run full-coverage && npm run merge-coverage",
+    "report": "npm run ci && npx c8 report -r=html --report-dir coverage"
   }
 }
