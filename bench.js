@@ -1,22 +1,24 @@
 'use strict'
 
-function bench () {
+import { exec as execute } from 'node:child_process'
+import util from 'node:util'
+
+const exec = util.promisify(execute)
+
+function b () {
   const results = []
   let timeTaken = 0
   let runnerStarted = 0
   let runnerTook = 0
+  let average = 0
   let running = false
 
-  function formatResults () {
-    return results
-  }
-
-  async function benchmark (f, timeLimit) {
+  async function bench (f, timeLimit = 5000, runLimit = 5) {
     running = true
 
     const runner = async function () {
       const start = Date.now()
-      await f()
+      await exec(f)
       results.push(Date.now() - start)
     }
 
@@ -28,19 +30,23 @@ function bench () {
       runnerTook = Date.now() - runnerStarted
 
       timeTaken += runnerTook
+      average = Math.ceil(timeTaken / results.length)
 
-      if (timeTaken >= (timeLimit -
-          Math.ceil(results.reduce((accumulator, current) => accumulator + current, 0) / results.length))) {
+      console.log(results.length, timeTaken)
+
+      // Require at least runLimit runs + timeLimit before stopping.
+      if (results.length >= runLimit && timeTaken >= (timeLimit - average)) {
         running = false
         break
       }
     } while (running)
 
     return {
-      results: formatResults(),
+      test: f + '',
+      results,
       min: Math.min(...results),
       max: Math.max(...results),
-      average: Math.ceil(results.reduce((accumulator, current) => accumulator + current, 0) / results.length),
+      average,
       runs: results.length,
       timeLimit,
       timeTaken,
@@ -49,12 +55,12 @@ function bench () {
   }
 
   return {
-    benchmark
+    bench
   }
 }
 
-const benchmark = bench().benchmark
+const bench = b().bench
 
 export {
-  benchmark
+  bench
 }

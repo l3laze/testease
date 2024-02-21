@@ -61,3 +61,5 @@ typings/
 .next
 
 *.lcov
+
+stats.md

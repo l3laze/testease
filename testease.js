@@ -1,11 +1,12 @@
 'use strict'
 
-function testease () {
+const { describe, it, reporter } = (function testease () {
   const results = {
     passed: 0,
     total: 0,
     message: '',
-    start: 0
+    start: 0,
+    tests: []
   }
 
   const check = '\u2714'
@@ -13,10 +14,6 @@ function testease () {
   const timeoutError = Symbol('Timeout error')
 
   function describe (label) {
-    if (results.start === 0) {
-      results.start = Date.now()
-    }
-
     results.message += '\n' + label + '\n'
   }
 
@@ -82,17 +79,17 @@ function testease () {
   }
 
   async function it (label, func, time = -1) {
-    await test(label, func, { timeLimit: time })
+    results.tests.push(test(label, func, { timeLimit: time }))
   }
 
   it.fails = async function (label, func, time = -1) {
-    await test(label, func, { fails: true, timeLimit: time })
+    results.tests.push(test(label, func, { fails: true, timeLimit: time }))
   }
 
   const reporter = async function () {
-    const end = Date.now()
+    await Promise.all(results.tests)
 
-    return `${results.message}\nFinished in ${end - results.start}ms\n${((results.passed / results.total * 100) + '').substring(0, 5)}% of tests passed (${results.passed}/${results.total})`
+    return `${results.message}\n${((results.passed / results.total * 100) + '').substring(0, 5)}% of tests passed (${results.passed}/${results.total})`
   }
 
   return {
@@ -100,12 +97,6 @@ function testease () {
     it,
     reporter
   }
-}
+})()
 
-const { describe, it, reporter } = testease()
-
-export {
-  describe,
-  it,
-  reporter
-}
+export { describe, it, reporter }

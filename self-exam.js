@@ -1,7 +1,6 @@
 'use strict'
 
 import { describe, it, reporter } from './testease.js'
-import { benchmark } from './bench.js'
 
 async function selfExam () {
   describe('Testease Framework')
@@ -10,7 +9,7 @@ async function selfExam () {
     return true
   })
 
-  await it('async success', async function () {
+  it('async success', async function () {
     return true
   })
 
@@ -18,11 +17,11 @@ async function selfExam () {
     return false
   })
 
-  await it.fails('async failure', async function () {
+  it.fails('async failure', async function () {
     return false
   })
 
-  await it.fails('timeout of async tests', async function () {
+  it.fails('timeout of async tests', async function () {
     await new Promise((resolve) => setTimeout(resolve, 100))
 
     return true
@@ -32,7 +31,7 @@ async function selfExam () {
     throw new Error('Hello, error!')
   })
 
-  await it.fails('catches async errors', async function () {
+  it.fails('catches async errors', async function () {
     throw new Error('Hello, error!')
   })
 
@@ -52,27 +51,23 @@ async function selfExam () {
   return results
 }
 
-const args = process?.argv.slice(2).map((a) => a.toLowerCase())
-const options = {
-  silent: false
-}
+selfExam().then((results) => {
+  console.log(results)
+})
 
-if (args.includes('--silent') || args.includes('-q')) {
-  options.silent = true
-}
+/*
+  const args = process?.argv.slice(2).map((a) => a.toLowerCase())
+  const options = {
+    silent: false
+  }
 
-if (args.includes('--bench') || args.includes('-b')) {
-  const timeLimit = parseInt(args.filter((a) => /\d+/.test(a))[0]) || 500
+  if (args.includes('--silent') || args.includes('-q')) {
+    options.silent = true
+  }
 
-  benchmark(selfExam, timeLimit).then((result) => {
-    if (!options.silent) {
-      console.log(result)
-    }
-  })
-} else {
   selfExam().then((result) => {
-    if (!options.silent) {
+    if (!args.includes('--silent') && !args.includes('-q')) {
       console.log(result)
     }
   })
-}
+*/
