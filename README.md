@@ -1,6 +1,6 @@
 # testease
 
-A simplified/toy Mocha-inspired test framework.
+A simplified/toy Mocha-inspired test tool.
 
 [![Generic badge](https://img.shields.io/badge/Vanilla-grey?logo=Javascript)](https://shields.io/)
 

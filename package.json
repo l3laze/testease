@@ -6,21 +6,13 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "benny": "^3.7.1",
-    "c8": "^9.1.0",
-    "mocha": "^10.3.0"
+    "c8": "^9.1.0"
   },
   "scripts": {
-    "bench": "node ./bench-deez.js && node ./bench-mocha.js",
     "clean": "rm -rf ./coverage && rm -f coverage.lcov",
     "test": "node ./self-exam.js",
-    "one-testease": "node ./micro-exam.js",
-    "mocha-test": "mocha ./mocha-exam.js",
-    "not-win": "ver >nul 2>&1 && echo Not supported on Windows && exit 1 || exit 0",
-    "time-mocha": "npm run not-win && /usr/bin/time -f '%E %M %P' mocha ./mocha-exam.js",
-    "time-single": "npm run not-win && /usr/bin/time -f '%E %M %P' node ./micro-exam.js",
+    "not-win": "ver && echo Not supported on Windows && exit 1 || exit 0",
     "time": "npm run not-win && /usr/bin/time -f '%E %M %P' node ./self-exam.js",
-    "timing": "npm run time-mocha && npm run time && npm run time-single",
     "coverage": "c8 -r=html --report-dir coverage/test --clean=false node ./self-exam.js",
     "silent-coverage": "c8 -r=html --report-dir coverage/silent --clean=false node ./self-exam.js -q",
     "full-coverage": "npm run clean && npm run coverage && npm run silent-coverage",
